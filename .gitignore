@@ -1,0 +1,11 @@
+# Build directory
+build/
+
+# VSCode settings
+.vscode/
+
+# ELF files
+*.elf
+
+# GBA ROM
+*.gba
