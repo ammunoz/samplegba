@@ -8,7 +8,7 @@ class GameObject : public Object
 public:
   GameObject();
   GameObject(int px, int py, int size = 0);
-  virtual void Render() const;
+  virtual void Render(vu16* buffer) const;
   virtual void Update() override {}
 
   void SetPosition(int px, int py);

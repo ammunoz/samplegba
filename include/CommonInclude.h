@@ -2,8 +2,6 @@
 
 #include <gba_video.h>
 
-#define Screen (vu16*)0x6000000
-
 enum Colour
 {
   BLACK = RGB5( 0,  0,  0),

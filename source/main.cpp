@@ -27,12 +27,14 @@ int main()
   // Main Loop
   int counter = 0;
   int bsize = 10;
+  int growth = 1;
   while(true)
   {
     rendering_system.Render(game_objects);
-    if(counter == 119)
+    if(counter >= 1)
     {
-      ++bsize;
+      if(bsize > 79 || bsize < 1) growth *= -1;
+      bsize += growth;
       counter = 0;
       b.SetSize(bsize);
     }
