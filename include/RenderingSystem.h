@@ -1,38 +1,17 @@
 #pragma once
 
-#include <gba_video.h>
+#include <vector>
 
 #include "CommonInclude.h"
-
-enum Colour
-{
-  BLACK = RGB5( 0,  0,  0),
-  BLUE  = RGB5( 0,  0, 31),
-  GREEN = RGB5( 0, 31,  0),
-  RED   = RGB5(31,  0,  0),
-  WHITE = RGB5(31, 31, 31)
-};
+#include "GameObject.h"
+#include "RenderingComponent.h"
 
 class RenderingSystem
 {
 public:
   RenderingSystem();
-  void DrawCircle(int cx, int cy, int radius, int colour, vu16* screen = Screen) const;
+  void Render(std::vector<GameObject*> game_objects) const;
 
 private:
-  inline void ColourPixel(int px, int py, int colour, vu16* screen = Screen) const
-  {
-    screen[px + (py * SCREEN_WIDTH)] = colour;
-  }
-
-  inline void ClearScreen(int colour = Colour::BLACK, vu16* screen = Screen) const
-  {
-    for(int x = 0; x < SCREEN_WIDTH; ++x)
-    {
-      for(int y = 0; y < SCREEN_HEIGHT; ++y)
-      {
-        ColourPixel(x, y, colour, screen);
-      }
-    }
-  }
+  RenderingComponent rendering_component_;
 };
