@@ -1,44 +1,39 @@
 #include "RenderingSystem.h"
 
 RenderingSystem::RenderingSystem()
+  : current_buffer_((vu16*)MODE5_FB)
+  , screen_clearer_()
 {
-  SetMode(LCDC_BITS::MODE_3 | LCDC_BITS::BG2_ENABLE);
-  ClearScreen(Colour::BLACK);
+  SetMode(LCDC_BITS::MODE_4 | LCDC_BITS::BG2_ENABLE);
 }
 
-void RenderingSystem::DrawCircle(int cx, int cy, int radius, int colour, vu16* screen) const
+void RenderingSystem::Render(std::vector<GameObject*>& game_objects)
 {
-	// https://en.wikipedia.org/wiki/Midpoint_circle_algorithm
-	int x = radius-1;
-	int y = 0;
-	int dx = 1;
-	int dy = 1;
-	int err = dx - (radius << 1);
+  // Clear appropriate buffer
+  screen_clearer_.GetRenderingComponent().ClearScreen(current_buffer_);
 
-	while (x >= y)
-	{
-		ColourPixel(cx + x, cy + y, colour, screen);
-		ColourPixel(cx + x, cy + y, colour, screen);
-		ColourPixel(cx + y, cy + x, colour, screen);
-		ColourPixel(cx - y, cy + x, colour, screen);
-		ColourPixel(cx - x, cy + y, colour, screen);
-		ColourPixel(cx - x, cy - y, colour, screen);
-		ColourPixel(cx - y, cy - x, colour, screen);
-		ColourPixel(cx + y, cy - x, colour, screen);
-		ColourPixel(cx + x, cy - y, colour, screen);
+  // Draw to buffer
+  for(auto game_object : game_objects)
+  {
+    game_object->Render(current_buffer_);
+  }
 
-		if (err <= 0)
-		{
-				++y;
-				err += dy;
-				dy += 2;
-		}
-		
-		if (err > 0)
-		{
-				x--;
-				dx += 2;
-				err += dx - (radius << 1);
-		}
-	}
+  // Display
+  FlipBuffers();
 }
+
+void RenderingSystem::FlipBuffers()
+{
+  // Swap buffers
+  if(current_buffer_ == (vu16*)MODE5_FB)
+  {
+    REG_DISPCNT &= ~LCDC_BITS::BACKBUFFER;
+    current_buffer_ = (vu16*)MODE5_BB;
+  }
+  else
+  {
+    REG_DISPCNT |= LCDC_BITS::BACKBUFFER;
+    current_buffer_ = (vu16*)MODE5_FB;
+  }
+}
+
