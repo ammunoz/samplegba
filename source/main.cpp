@@ -13,31 +13,24 @@ int main()
   int cx = (SCREEN_WIDTH / 2) - 1;
   int cy = (SCREEN_HEIGHT / 2) - 1;
 
-  GameObject r(cx, cy, 50);
+  GameObject r(cx, cy, 45);
   r.GetRenderingComponent().SetColour(Colour::RED);
 
   GameObject g(cx, cy, 30);
   g.GetRenderingComponent().SetColour(Colour::GREEN);
 
-  GameObject b(cx, cy, 10);
+  GameObject b(cx, cy, 15);
   b.GetRenderingComponent().SetColour(Colour::BLUE);
   
   std::vector<GameObject*> game_objects = {&r, &g, &b};
 
   // Main Loop
-  int counter = 0;
-  int bsize = 10;
-  int growth = 1;
   while(true)
   {
-    rendering_system.Render(game_objects);
-    if(counter >= 1)
+    for(auto object : game_objects)
     {
-      if(bsize > 79 || bsize < 1) growth *= -1;
-      bsize += growth;
-      counter = 0;
-      b.SetSize(bsize);
+      object->Update();
     }
-    ++counter;
+    rendering_system.Render(game_objects);
   }
 }

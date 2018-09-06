@@ -9,7 +9,7 @@ class RenderingSystem
 {
 public:
   RenderingSystem();
-  void Render(std::vector<GameObject*> game_objects);
+  void Render(std::vector<GameObject*>& game_objects);
 
 private:
   void FlipBuffers();

@@ -7,7 +7,7 @@ RenderingSystem::RenderingSystem()
   SetMode(LCDC_BITS::MODE_4 | LCDC_BITS::BG2_ENABLE);
 }
 
-void RenderingSystem::Render(std::vector<GameObject*> game_objects)
+void RenderingSystem::Render(std::vector<GameObject*>& game_objects)
 {
   // Clear appropriate buffer
   screen_clearer_.GetRenderingComponent().ClearScreen(current_buffer_);
