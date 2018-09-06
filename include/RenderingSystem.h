@@ -4,14 +4,15 @@
 
 #include "CommonInclude.h"
 #include "GameObject.h"
-#include "RenderingComponent.h"
 
 class RenderingSystem
 {
 public:
   RenderingSystem();
-  void Render(std::vector<GameObject*> game_objects) const;
+  void Render(std::vector<GameObject*>& game_objects);
 
 private:
-  RenderingComponent rendering_component_;
+  void FlipBuffers();
+  vu16* current_buffer_;
+  GameObject screen_clearer_;
 };
